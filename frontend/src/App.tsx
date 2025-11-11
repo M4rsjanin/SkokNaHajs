@@ -1,34 +1,22 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import './index.css' // Upewnij się, że importujesz index.css (tam jest Tailwind)
+import { Button } from '@/components/ui/button' // Importuj nowy przycisk (używając aliasu @)
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    // Używamy klas Tailwind do stylowania
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-background text-foreground">
+      <h1 className="text-4xl font-bold mb-6">
+        Skok na Hajs (z shadcn/ui!)
+      </h1>
+      <div className="space-x-4">
+        {/* To są Twoje nowe komponenty! */}
+        <Button>Zaloguj się</Button>
+        <Button variant="secondary">Zarejestruj się</Button>
+        <Button variant="outline">Szczegóły</Button>
+        <Button variant="destructive">Usuń</Button>
+        <Button variant="link">Zapomniałem hasła</Button>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   )
 }
 
