@@ -1,0 +1,6 @@
+spring.datasource.url=jdbc:postgresql://YOUR_DB_HOST/YOUR_DB_NAME?sslmode=require
+spring.datasource.username=YOUR_USERNAME
+spring.datasource.password=YOUR_PASSWORD
+
+jwt.secret=YOUR_SECRET_AT_LEAST_32_CHARS_LONG
+jwt.expiration=86400000
