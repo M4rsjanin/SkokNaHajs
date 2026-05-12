@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { authApi } from '@/api/authApi';
 import { Button } from '@/components/ui/button';
@@ -32,11 +33,15 @@ function LoginPage() {
       localStorage.setItem('email', response.email);
       localStorage.setItem('firstName', response.firstName);
       navigate('/dashboard');
-    } catch (err: any) {
-      setError(err.response?.data?.error || 'Nieprawidłowy email lub hasło');
-    } finally {
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response?.data?.error) {
+        setError(err.response.data.error);
+      } else {
+        setError('Nieprawidłowy email lub hasło');
+      }
+      } finally {
       setLoading(false);
-    }
+      }
   };
 
   return (

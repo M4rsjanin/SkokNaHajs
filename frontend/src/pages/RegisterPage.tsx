@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { authApi } from '@/api/authApi';
+import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -31,8 +32,12 @@ function RegisterPage() {
     try {
       await authApi.register({ email, password, firstName, lastName });
       navigate('/login');
-    } catch (err: any) {
-      setError(err.response?.data?.error || 'Coś poszło nie tak');
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response?.data?.error) {
+        setError(err.response.data.error);
+      } else {
+        setError('Coś poszło nie tak');
+      }
     } finally {
       setLoading(false);
     }
