@@ -27,6 +27,7 @@ function DashboardPage() {
         const data = await accountApi.getMyAccount();
         setAccount(data);
       } catch (err) {
+        console.error('Nie udało się pobrać konta:', err);
         setError('Nie udało się pobrać danych konta');
       } finally {
         setLoading(false);
