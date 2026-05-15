@@ -16,6 +16,7 @@ import pl.marsjanin.bank.backend.auth.AuthService;
 import pl.marsjanin.bank.backend.auth.dto.RegisterRequest;
 import pl.marsjanin.bank.backend.auth.dto.RegisterResponse;
 import pl.marsjanin.bank.backend.auth.jwt.JwtUtil;
+import pl.marsjanin.bank.backend.account.AccountService;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -25,6 +26,9 @@ public class UserServiceTest {
 
     @Mock
     private PasswordEncoder passwordEncoder;
+
+    @Mock
+    private AccountService accountService;
 
     @Mock
     private JwtUtil jwtUtil;
