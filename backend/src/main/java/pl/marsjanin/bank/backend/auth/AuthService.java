@@ -4,6 +4,8 @@ package pl.marsjanin.bank.backend.auth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import pl.marsjanin.bank.backend.account.AccountService;
 import pl.marsjanin.bank.backend.auth.dto.LoginRequest;
 import pl.marsjanin.bank.backend.auth.dto.LoginResponse;
 import pl.marsjanin.bank.backend.auth.dto.RegisterRequest;
@@ -19,8 +21,9 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+    private final AccountService accountService;
 
-
+    @Transactional
     public RegisterResponse register(RegisterRequest request){
         if( userRepository.existsByEmail(request.getEmail())){
             throw new IllegalStateException("Email jest już zajęty");
@@ -32,6 +35,7 @@ public class AuthService {
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         User saved = userRepository.save(user);
+        accountService.createAccountForUser(saved);
         return new RegisterResponse(saved.getId(), saved.getEmail(), saved.getFirstName(), saved.getLastName());
     }
 
