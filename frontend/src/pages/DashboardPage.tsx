@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { accountApi } from '@/api/accountApi';
+import type { AccountResponse } from '@/types/account';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -12,15 +14,44 @@ import {
 function DashboardPage() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [account, setAccount] = useState<AccountResponse | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const firstName = localStorage.getItem('firstName');
   const email = localStorage.getItem('email');
+
+  useEffect(() => {
+    const fetchAccount = async () => {
+      try {
+        const data = await accountApi.getMyAccount();
+        setAccount(data);
+      } catch (err) {
+        console.error('Nie udało się pobrać konta:', err);
+        setError('Nie udało się pobrać danych konta');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAccount();
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('email');
     localStorage.removeItem('firstName');
     navigate('/');
+  };
+
+  const formatBalance = (balance: number, currency: string) => {
+    return new Intl.NumberFormat('pl-PL', {
+      style: 'currency',
+      currency: currency,
+    }).format(balance);
+  };
+
+  const formatAccountNumber = (accountNumber: string) => {
+    return accountNumber.replace(/(.{4})/g, '$1 ').trim();
   };
 
   const navItems = [
@@ -93,18 +124,29 @@ function DashboardPage() {
                 Saldo dostępne
               </CardDescription>
               <CardTitle className="text-4xl font-bold mt-2">
-                12 450,00 zł
+                {loading && 'Ładowanie...'}
+                {error && '—'}
+                {account && formatBalance(account.balance, account.currency)}
               </CardTitle>
             </CardHeader>
             <CardContent>
+              {error && (
+                <div className="mb-3 p-2 rounded bg-destructive/20 text-sm">
+                  {error}
+                </div>
+              )}
               <div className="flex justify-between text-sm text-primary-foreground/90">
                 <div>
                   <p className="text-primary-foreground/70">Numer konta</p>
-                  <p className="font-mono">PL 12 3456 7890 1234 5678</p>
+                  <p className="font-mono">
+                    {loading && '...'}
+                    {error && '—'}
+                    {account && formatAccountNumber(account.accountNumber)}
+                  </p>
                 </div>
                 <div className="text-right">
                   <p className="text-primary-foreground/70">Konto główne</p>
-                  <p>PLN</p>
+                  <p>{account?.currency ?? '—'}</p>
                 </div>
               </div>
             </CardContent>
