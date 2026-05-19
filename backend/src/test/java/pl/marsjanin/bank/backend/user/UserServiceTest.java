@@ -12,12 +12,14 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 import pl.marsjanin.bank.backend.auth.AuthService;
 import pl.marsjanin.bank.backend.auth.dto.RegisterRequest;
 import pl.marsjanin.bank.backend.auth.dto.RegisterResponse;
 import pl.marsjanin.bank.backend.auth.jwt.JwtUtil;
 
 @ExtendWith(MockitoExtension.class)
+@ActiveProfiles("test")
 public class UserServiceTest {
 
     @Mock
