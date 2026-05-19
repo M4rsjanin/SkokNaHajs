@@ -3,13 +3,8 @@ name: Backend CI
 on:
   push:
     branches: [main, develop]
-    paths:
-      - 'backend/**'
-      - '.github/workflows/backend.yml'
   pull_request:
     branches: [main, develop]
-    paths:
-      - 'backend/**'
 
 jobs:
   build-and-test:
@@ -32,19 +27,7 @@ jobs:
       - name: Build with Gradle
         working-directory: backend
         run: ./gradlew build -x test
-        env:
-          DB_URL: jdbc:h2:mem:testdb
-          DB_USERNAME: sa
-          DB_PASSWORD: ''
-          JWT_SECRET: TestSecretKeyMustBeAtLeast32CharsLongForCI!!
-          JWT_EXPIRATION: 86400000
 
       - name: Run tests
         working-directory: backend
         run: ./gradlew test
-        env:
-          DB_URL: jdbc:h2:mem:testdb
-          DB_USERNAME: sa
-          DB_PASSWORD: ''
-          JWT_SECRET: TestSecretKeyMustBeAtLeast32CharsLongForCI!!
-          JWT_EXPIRATION: 86400000

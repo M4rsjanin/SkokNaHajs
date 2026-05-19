@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServic
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import pl.marsjanin.bank.backend.account.dto.AccountResponse;
@@ -26,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = AccountController.class,
     excludeAutoConfiguration = {UserDetailsServiceAutoConfiguration.class})
 @Import({SecurityConfig.class, JwtAuthFilter.class})
+@ActiveProfiles("test")
 class AccountControllerTest {
 
     @Autowired
